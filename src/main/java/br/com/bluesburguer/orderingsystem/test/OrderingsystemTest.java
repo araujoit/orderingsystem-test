@@ -29,7 +29,7 @@ public class OrderingsystemTest {
 		SpringApplication.run(OrderingsystemTest.class, args);
 	}
 
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		publishEvent(Step.ORDER, Fase.PENDING);
 		publishEvent(Step.ORDER, Fase.IN_PROGRESS);
