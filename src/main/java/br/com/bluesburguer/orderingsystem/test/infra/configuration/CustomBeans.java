@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 public class CustomBeans {
 
 	@Bean
-	public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
+	WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
 	                WebEndpointsSupplier webEndpointsSupplier, 
 	                ServletEndpointsSupplier servletEndpointsSupplier, 
 	                ControllerEndpointsSupplier controllerEndpointsSupplier, 
