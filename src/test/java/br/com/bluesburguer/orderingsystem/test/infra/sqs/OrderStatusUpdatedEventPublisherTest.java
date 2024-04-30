@@ -1,4 +1,4 @@
-package br.com.bluesburguer.orderingsystem.production.infra.sqs;
+package br.com.bluesburguer.orderingsystem.test.infra.sqs;
 
 import java.util.Random;
 import java.util.UUID;
@@ -12,13 +12,13 @@ import br.com.bluesburguer.orderingsystem.order.domain.Fase;
 import br.com.bluesburguer.orderingsystem.order.domain.OrderStatusUpdated;
 import br.com.bluesburguer.orderingsystem.order.domain.Status;
 import br.com.bluesburguer.orderingsystem.order.domain.Step;
-import br.com.bluesburguer.orderingsystem.production.utils.BaseIntegrationTest;
-import br.com.bluesburguer.orderingsystem.test.infra.sqs.OrderStatusUpdatedEventPublisher;
+import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderStatusUpdatedEventPublisherImpl;
+import br.com.bluesburguer.orderingsystem.test.utils.BaseIntegrationTest;
 
 class OrderStatusUpdatedEventPublisherTest extends BaseIntegrationTest {
 	
 	@Autowired
-	private OrderStatusUpdatedEventPublisher publisher;
+	private OrderStatusUpdatedEventPublisherImpl publisher;
 
 	@Test
 	void shouldPublishEvent() throws JsonProcessingException, InterruptedException {
