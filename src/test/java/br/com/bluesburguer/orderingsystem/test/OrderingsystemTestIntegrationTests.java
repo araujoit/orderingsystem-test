@@ -9,7 +9,7 @@ import br.com.bluesburguer.orderingsystem.test.utils.BaseIntegrationTest;
 class OrderingsystemTestIntegrationTests extends BaseIntegrationTest {
 
 	@Test
-	void context() {
+	void deveSubirContexto() {
 		assertThat(super.hashCode()).isNotZero();
 	}
 }
