@@ -106,6 +106,13 @@
 		    <artifactId>spring-boot-starter-actuator</artifactId>
 		    <version>2.7.3</version>
 		</dependency>
+
+		<!-- Spring Boot Migrator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-properties-migrator</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
