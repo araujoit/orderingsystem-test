@@ -1,4 +1,4 @@
-package br.com.bluesburguer.orderingsystem.test.infra.configuration.database;
+package br.com.bluesburguer.orderingsystem.test.infra.configuration.persistence;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
