@@ -48,9 +48,9 @@ public class SQSConfig {
     }
     
     @Bean
-    protected MessageConverter messageConverter(ObjectMapper objectMapper) {
+    protected MessageConverter messageConverter() {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setObjectMapper(objectMapper);
+        converter.setObjectMapper(objectMapper());
         converter.setSerializedPayloadClass(String.class);
         converter.setStrictContentTypeMatch(false);
         return converter;

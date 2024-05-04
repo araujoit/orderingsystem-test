@@ -13,10 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.bluesburguer.orderingsystem.order.domain.events.OrderEvent;
 import br.com.bluesburguer.orderingsystem.test.infra.sqs.OrderEventPublisher;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public abstract class OrderEventPublisherImpl<T extends OrderEvent> implements OrderEventPublisher<T> {
 	
 	@Value("${cloud.aws.queue.host}")
@@ -27,28 +29,23 @@ public abstract class OrderEventPublisherImpl<T extends OrderEvent> implements O
     private final AmazonSQS amazonSQS;
 
     private final ObjectMapper objectMapper;
-    
-    protected OrderEventPublisherImpl(AmazonSQS amazonSQS, ObjectMapper objectMapper, String queueName) {
-    	this.amazonSQS = amazonSQS;
-    	this.objectMapper = objectMapper;
-    	this.queueName = queueName;
-    }
 
     @Override
     public Optional<String> publish(T event) {
+    	var fullQueueUrl = buildQueueUrl();
+    	log.info("Publishing event {} in SQS queue {}", event, fullQueueUrl);
+    	
         SendMessageRequest sendMessageRequest = null;
         try {
         	var groupId = alphanumericId();
     		var deduplicationId = alphanumericId();
     		
-    		var fullQueueUrl = buildQueueUrl();
             sendMessageRequest = new SendMessageRequest().withQueueUrl(fullQueueUrl)
                     .withMessageBody(objectMapper.writeValueAsString(event))
                     .withMessageGroupId(groupId)
                     .withMessageDeduplicationId(deduplicationId);
             var result = amazonSQS.sendMessage(sendMessageRequest);
             var messageId = result.getMessageId();
-            log.info("Evento {} foi publicado no SQS(fila {}) com o id {}", event, fullQueueUrl, messageId);
             return Optional.ofNullable(messageId);
         } catch (JsonProcessingException e) {
         	log.error("JsonProcessingException e : {} and stacktrace : {}", e.getMessage(), e);

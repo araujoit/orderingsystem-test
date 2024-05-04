@@ -2,15 +2,13 @@ package br.com.bluesburguer.orderingsystem.test.interfaces.api;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.bluesburguer.orderingsystem.order.domain.events.OrderPaid;
-import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderInProgressEventPublisherImpl;
-import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderPaidEventPublisherImpl;
-import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderProducedEventPublisherImpl;
+import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderDeliveredEventPublisherImpl;
+import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderDeliveringEventPublisherImpl;
 import br.com.bluesburguer.orderingsystem.test.interfaces.OrderClient;
 import br.com.bluesburguer.orderingsystem.test.interfaces.dto.OrderDto;
 import br.com.bluesburguer.orderingsystem.test.interfaces.dto.OrderItemDto;
@@ -22,43 +20,31 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/event/kitchen")
+@RequestMapping("/api/event/delivery")
 @RequiredArgsConstructor
-public class KitchenRestResource {
+public class DeliveryRestResource {
 	
 	private final OrderClient client;
 	
-	private final OrderPaidEventPublisherImpl orderPaidEventPublisher;
+	private final OrderDeliveringEventPublisherImpl orderDeliveringEventPublisher;
 	
-	private final OrderInProgressEventPublisherImpl orderInProgressEventPublisher;
-	
-	private final OrderProducedEventPublisherImpl orderProducedEventPublisher;
-
-	@PostMapping
-	public String createNewOrder() {
-		var order = recoverOrCreateOrder();
-		log.info("Considerando pedido: {}", order);
-		
-		return orderPaidEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
-				.orElseThrow();
-			
-	}
+	private final OrderDeliveredEventPublisherImpl orderDeliveredEventPublisher;
 	
 	@PutMapping("/IN_PROGRESS")
-	public String orderInProgressAtKitchen() {
+	public String orderInProgressAtDelivery() {
 		var order = recoverOrCreateOrder();
 		log.info("Considerando pedido: {}", order);
 		
-		return orderInProgressEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
+		return orderDeliveringEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
 				.orElseThrow();
 	}
 	
 	@PutMapping("DONE")
-	public String orderDoneAtKitchen() {
+	public String orderDoneAtDelivery() {
 		var order = recoverOrCreateOrder();
 		log.info("Considerando pedido: {}", order);
 		
-		return orderProducedEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
+		return orderDeliveredEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
 				.orElseThrow();
 	}
 	

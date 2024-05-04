@@ -10,9 +10,9 @@ import lombok.ToString;
 
 @ToString(callSuper = true)
 @Service
-public class OrderPaidEventPublisher extends OrderEventPublisherImpl<OrderPaid> {
+public class OrderProducedEventPublisherImpl extends OrderEventPublisherImpl<OrderPaid> {
 
-	protected OrderPaidEventPublisher(AmazonSQS amazonSQS, ObjectMapper objectMapper) {
-		super(amazonSQS, objectMapper, "localstack-queue-order-paid.fifo");
+	protected OrderProducedEventPublisherImpl(AmazonSQS amazonSQS, ObjectMapper objectMapper) {
+		super("order-produced-queue.fifo", amazonSQS, objectMapper);
 	}
 }

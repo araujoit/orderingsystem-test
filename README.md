@@ -15,3 +15,4 @@ Desinstalação
 ### Referências
 
 https://cloud.spring.io/spring-cloud-consul/reference/html/appendix.html
+https://www.baeldung.com/aws-queues-java
