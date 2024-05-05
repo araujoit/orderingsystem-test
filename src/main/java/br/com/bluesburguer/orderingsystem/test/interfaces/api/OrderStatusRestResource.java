@@ -13,13 +13,11 @@ import br.com.bluesburguer.orderingsystem.order.domain.Status;
 import br.com.bluesburguer.orderingsystem.order.domain.Step;
 import br.com.bluesburguer.orderingsystem.test.infra.sqs.OrderStatusUpdatedEventPublisher;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/event/order-status")
 @RequiredArgsConstructor
-public class OrderStatusUpdatedRestResource {
+public class OrderStatusRestResource {
 	
 	@Autowired
 	private OrderStatusUpdatedEventPublisher publisher;

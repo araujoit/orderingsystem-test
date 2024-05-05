@@ -1,0 +1,9 @@
+{
+	"properties": [
+		{
+			"name": "cloud.aws.queue.host",
+			"type": "java.lang.String",
+			"description": "Endereço do sqs com o userid. Ex: https://sqs.us-east-1.amazonaws.com/1234567890"
+		}
+	]
+}

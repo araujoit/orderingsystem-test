@@ -14,7 +14,6 @@ import br.com.bluesburguer.orderingsystem.order.domain.OrderStatusUpdated;
 import br.com.bluesburguer.orderingsystem.test.infra.sqs.OrderStatusUpdatedEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 
-@Deprecated(forRemoval = true, since = "2024-05-03 21:30:00")
 @Slf4j
 @Service
 @Profile({"production", "dev", "test"})
