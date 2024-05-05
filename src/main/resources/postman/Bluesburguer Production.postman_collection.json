@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "9d64e4c3-860f-4998-99c4-7cc7093e8138",
+		"name": "Bluesburguer Production",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Queue Attributes",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"queueUrl\", \"SQS_DEMO_QUEUE.fifo\");\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"SQS_DEMO_QUEUE-dead-letter.fifo\");\r",
+							"\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-paid-queue.fifo\");\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-paid-queue-dead-letter.fifo\");\r",
+							"\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-in-production-queue.fifo\");\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-in-production-queue-dead-letter.fifo\");\r",
+							"\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-produced-queue.fifo\");\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-produced-queue-dead-letter.fifo\");\r",
+							"\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-delivering-queue.fifo\");\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-delivering-queue-dead-letter.fifo\");\r",
+							"\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-delivered-queue.fifo\");\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-delivered-queue-dead-letter.fifo\");\r",
+							"\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-canceled-queue.fifo\");\r",
+							"// pm.collectionVariables.set(\"queueUrl\", \"order-canceled-queue-dead-letter.fifo\");\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/queue/attributes/{{queueUrl}}?attributeName=ApproximateNumberOfMessages",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"queue",
+						"attributes",
+						"{{queueUrl}}"
+					],
+					"query": [
+						{
+							"key": "attributeName",
+							"value": "ApproximateNumberOfMessages"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "queueUrl",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

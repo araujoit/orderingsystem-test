@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "8875537f-b7f5-4707-bb2e-ab05df37f578",
+		"name": "Bluesburguer Event Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Order To Kitchen",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/event/kitchen",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"event",
+						"kitchen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Existant Order To IN_PROGRESS in Kitchen",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/event/kitchen/IN_PROGRESS",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"event",
+						"kitchen",
+						"IN_PROGRESS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Existant Order To DONE in Kitchen",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/event/kitchen/DONE",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"event",
+						"kitchen",
+						"DONE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Existant Order To IN_PROGRESS in Delivery",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/event/delivery/IN_PROGRESS",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"event",
+						"delivery",
+						"IN_PROGRESS"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Existant Order To DONE in Delivery",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/event/delivery/DONE",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"event",
+						"delivery",
+						"DONE"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Message Test",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Um conteúdo de exemplo",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/event/message",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"event",
+						"message"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:7000",
+			"type": "default"
+		}
+	]
+}
