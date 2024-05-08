@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.bluesburguer.orderingsystem.order.domain.events.OrderInProduction;
 import br.com.bluesburguer.orderingsystem.order.domain.events.OrderPaid;
+import br.com.bluesburguer.orderingsystem.order.domain.events.OrderProduced;
 import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderInProgressEventPublisherImpl;
 import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderPaidEventPublisherImpl;
 import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderProducedEventPublisherImpl;
@@ -49,7 +51,7 @@ public class KitchenRestResource {
 		var order = recoverOrCreateOrder();
 		log.info("Considerando pedido: {}", order);
 		
-		return orderInProgressEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
+		return orderInProgressEventPublisher.publish(OrderInProduction.builder().orderId(order.getId()).build())
 				.orElseThrow();
 	}
 	
@@ -58,7 +60,7 @@ public class KitchenRestResource {
 		var order = recoverOrCreateOrder();
 		log.info("Considerando pedido: {}", order);
 		
-		return orderProducedEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
+		return orderProducedEventPublisher.publish(OrderProduced.builder().orderId(order.getId()).build())
 				.orElseThrow();
 	}
 	

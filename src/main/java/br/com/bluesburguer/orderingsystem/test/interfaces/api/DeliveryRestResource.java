@@ -6,7 +6,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.bluesburguer.orderingsystem.order.domain.events.OrderPaid;
+import br.com.bluesburguer.orderingsystem.order.domain.events.OrderDelivered;
+import br.com.bluesburguer.orderingsystem.order.domain.events.OrderDelivering;
 import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderDeliveredEventPublisherImpl;
 import br.com.bluesburguer.orderingsystem.test.infra.client.sqs.OrderDeliveringEventPublisherImpl;
 import br.com.bluesburguer.orderingsystem.test.interfaces.OrderClient;
@@ -35,7 +36,7 @@ public class DeliveryRestResource {
 		var order = recoverOrCreateOrder();
 		log.info("Considerando pedido: {}", order);
 		
-		return orderDeliveringEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
+		return orderDeliveringEventPublisher.publish(OrderDelivering.builder().orderId(order.getId()).build())
 				.orElseThrow();
 	}
 	
@@ -44,7 +45,7 @@ public class DeliveryRestResource {
 		var order = recoverOrCreateOrder();
 		log.info("Considerando pedido: {}", order);
 		
-		return orderDeliveredEventPublisher.publish(OrderPaid.builder().orderId(order.getId()).build())
+		return orderDeliveredEventPublisher.publish(OrderDelivered.builder().orderId(order.getId()).build())
 				.orElseThrow();
 	}
 	

@@ -19,8 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 @Profile({"production", "dev", "test"})
 public class OrderStatusUpdatedEventPublisherImpl implements OrderStatusUpdatedEventPublisher {
 	
-	@Value("${cloud.aws.queue.url:none}")
-    private String queueUrl;
+	@Value("${cloud.aws.endpoint.uri}")
+    private String queueHost;
+	
+	@Value("${cloud.aws.accountId}")
+    private String accountId;
 
     private final AmazonSQS amazonSQS;
 
@@ -37,12 +40,13 @@ public class OrderStatusUpdatedEventPublisherImpl implements OrderStatusUpdatedE
         	var groupId = alphanumericId();
     		var deduplicationId = alphanumericId();
     		
-            sendMessageRequest = new SendMessageRequest().withQueueUrl(this.queueUrl)
+    		String quueueUrl = String.format("%s/%s", this.queueHost, this.accountId);
+            sendMessageRequest = new SendMessageRequest().withQueueUrl(quueueUrl)
                     .withMessageBody(objectMapper.writeValueAsString(event))
                     .withMessageGroupId(groupId)
                     .withMessageDeduplicationId(deduplicationId);
             amazonSQS.sendMessage(sendMessageRequest);
-            log.info("Event has been published in SQS({}) with id {}", this.queueUrl, event.getId());
+            log.info("Event has been published in SQS({}) with id {}", quueueUrl, event.getId());
         } catch (JsonProcessingException e) {
         	log.error("JsonProcessingException e : {} and stacktrace : {}", e.getMessage(), e);
         } catch (Exception e) {

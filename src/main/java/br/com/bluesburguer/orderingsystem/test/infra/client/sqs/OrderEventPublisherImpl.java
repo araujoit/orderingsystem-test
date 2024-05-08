@@ -3,6 +3,7 @@ package br.com.bluesburguer.orderingsystem.test.infra.client.sqs;
 import java.util.Optional;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +22,36 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public abstract class OrderEventPublisherImpl<T extends OrderEvent> implements OrderEventPublisher<T> {
 	
-	@Value("${cloud.aws.queue.host}")
+	private final String queueName;
+	
+	/*
+	@Autowired
+	private QueueMessagingTemplate messagingTemplate;
+	
+	@Override
+    public Optional<String> publish(T event) {
+		var messageId = UUID.randomUUID().toString();
+		
+		log.info("Notifying queue {} with id {}", this.queueName, messageId);
+	    messagingTemplate.convertAndSend(this.queueName, event, m -> {
+	    	m.getHeaders().put("MessageGroupId", messageId);
+	    	return m;
+	    });
+	    return Optional.of("");
+	}
+	*/
+	
+	@Value("${cloud.aws.endpoint.uri}")
     private String queueHost;
-    
-    private final String queueName;
+	
+	@Value("${cloud.aws.accountId}")
+    private String accountId;
 
-    private final AmazonSQS amazonSQS;
+	@Autowired
+    private AmazonSQS amazonSQS;
 
-    private final ObjectMapper objectMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public Optional<String> publish(T event) {
@@ -40,7 +63,8 @@ public abstract class OrderEventPublisherImpl<T extends OrderEvent> implements O
         	var groupId = alphanumericId();
     		var deduplicationId = alphanumericId();
     		
-            sendMessageRequest = new SendMessageRequest().withQueueUrl(fullQueueUrl)
+            sendMessageRequest = new SendMessageRequest()
+            		.withQueueUrl(fullQueueUrl)
                     .withMessageBody(objectMapper.writeValueAsString(event))
                     .withMessageGroupId(groupId)
                     .withMessageDeduplicationId(deduplicationId);
@@ -56,7 +80,7 @@ public abstract class OrderEventPublisherImpl<T extends OrderEvent> implements O
     }
     
     private String buildQueueUrl() {
-    	return String.join("/", this.queueHost, this.queueName);
+    	return String.join("/", this.queueHost, this.accountId, this.queueName);
     }
     
     private String alphanumericId() {

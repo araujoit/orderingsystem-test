@@ -2,17 +2,14 @@ package br.com.bluesburguer.orderingsystem.test.infra.client.sqs;
 
 import org.springframework.stereotype.Service;
 
-import com.amazonaws.services.sqs.AmazonSQS;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.com.bluesburguer.orderingsystem.order.domain.events.OrderPaid;
+import br.com.bluesburguer.orderingsystem.order.domain.events.OrderDelivering;
 import lombok.ToString;
 
 @ToString(callSuper = true)
 @Service
-public class OrderDeliveringEventPublisherImpl extends OrderEventPublisherImpl<OrderPaid> {
+public class OrderDeliveringEventPublisherImpl extends OrderEventPublisherImpl<OrderDelivering> {
 
-	protected OrderDeliveringEventPublisherImpl(AmazonSQS amazonSQS, ObjectMapper objectMapper) {
-		super("order-delivering-queue.fifo", amazonSQS, objectMapper);
+	protected OrderDeliveringEventPublisherImpl() {
+		super("order-delivering.fifo");
 	}
 }

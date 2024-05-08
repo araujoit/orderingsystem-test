@@ -1,47 +1,71 @@
 package br.com.bluesburguer.orderingsystem.test.infra.sqs;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.aws.messaging.core.NotificationMessagingTemplate;
 import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.converter.MessageConverter;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
+import com.amazonaws.services.sns.AmazonSNS;
+import com.amazonaws.services.sns.AmazonSNSAsyncClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Configuration
 public class SQSConfig {
 
-    @Value("${cloud.aws.region.static}")
-    private String region;
+	@Value("${cloud.aws.endpoint.uri}")
+	private String host;
 
-    @Bean
-    @Primary
-    AmazonSQSAsync amazonSQSAsync() {
-    	return AmazonSQSAsyncClientBuilder.standard()
-        		.withRegion(region)
-                .build();
-    }
+	@Value("${cloud.aws.credentials.access-key:key}")
+	private String accessKeyId;
 
-    @Bean
-    QueueMessagingTemplate queueMessagingTemplate() {
-        return new QueueMessagingTemplate(amazonSQSAsync());
-    }
+	@Value("${cloud.aws.credentials.secret-key:value}")
+	private String secretAccessKey;
 
-    @Bean
-    ObjectMapper objectMapper() {
-        return new ObjectMapper().findAndRegisterModules();
-    }
-    
-    @Bean
-    protected MessageConverter messageConverter() {
-        MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
-        converter.setObjectMapper(objectMapper());
-        converter.setSerializedPayloadClass(String.class);
-        converter.setStrictContentTypeMatch(false);
-        return converter;
-    }
+	@Value("${cloud.aws.region.static:us-east-1}")
+	private String region;
+
+	// Configurações dos beans para o SNS e SQS
+	@Bean
+	@Primary
+	NotificationMessagingTemplate notificationMessagingTemplate(AmazonSNS amazonSNS) {
+		return new NotificationMessagingTemplate(amazonSNS);
+	}
+
+	@Bean
+	@Primary
+	AmazonSQSAsync amazonSQSAsync() {
+		return AmazonSQSAsyncClientBuilder.standard()
+				.withEndpointConfiguration(getEndpointConfiguration())
+				.withCredentials(getCredentialsProvider())
+				.build();
+	}
+
+	@Bean
+	@Primary
+	AmazonSNS amazonSNSAsync() {
+		return AmazonSNSAsyncClientBuilder.standard()
+				.withEndpointConfiguration(getEndpointConfiguration())
+				.withCredentials(getCredentialsProvider())
+				.build();
+	}
+
+	@Bean
+	@Primary
+	QueueMessagingTemplate queueMessagingTemplate() {
+		return new QueueMessagingTemplate(amazonSQSAsync());
+	}
+
+	private EndpointConfiguration getEndpointConfiguration() {
+		return new EndpointConfiguration(host, region);
+	}
+
+	public AWSStaticCredentialsProvider getCredentialsProvider() {
+		return new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKeyId, secretAccessKey));
+	}
 }

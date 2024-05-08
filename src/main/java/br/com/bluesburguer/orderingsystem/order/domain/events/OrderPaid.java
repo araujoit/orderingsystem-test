@@ -15,6 +15,6 @@ public class OrderPaid extends OrderEvent {
 
 	@Override
 	public String toString() {
-		return "OrderPaid(" + super.getOrderId() + ")";
+		return this.getClass().getName() + "(" + super.getOrderId() + ")";
 	}
 }
